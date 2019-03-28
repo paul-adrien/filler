@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 17:11:53 by plaurent          #+#    #+#             */
-/*   Updated: 2019/03/28 14:26:04 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:46:36 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,7 @@ static int	ft_test(char **map, char **piece, int y, int x)
 	{
 		k = ft_test2(map, piece, y, x);
 		if (!piece[k] && ft_check(map, piece, y, x) <= 1)
-		{
-			ft_putnbr(y);
-			write(1, " ", 1);
-			ft_putnbr(x - 4);
-			write(1, "\n", 1);
-			return (1);
-		}
+			ft_stock(y, x, 0)
 	}
 	return (0);
 }

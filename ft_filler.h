@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 13:34:26 by plaurent          #+#    #+#             */
-/*   Updated: 2019/03/21 15:49:25 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/04/03 17:07:58 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,22 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-int		ft_pos_map(char **map, char **piece, int i, int j);
+typedef struct	s_point
+{
+	int		y;
+	int		x;
+}				t_point;
+
+typedef struct	s_asset
+{
+	char	player;
+	//t_point	size_map;
+	//t_point	size_piece;
+	char	**map;
+	char	**piece;
+	int		*last_p;
+	int		*res;
+}				t_asset;
+
+t_asset		ft_pos_map(t_asset asset, int i, int j);
 #endif

@@ -6,18 +6,19 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 12:27:44 by plaurent          #+#    #+#             */
-/*   Updated: 2019/03/26 11:26:47 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/04/03 19:33:20 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_filler.h"
 
-static char	**get_map(char **map)
+static char	**get_map()
 {
 	int		fd;
 	int		size[2];
 	char	*line;
 	int		i;
+	char	**map;
 
 	i = 0;
 	fd = 0;
@@ -36,10 +37,11 @@ static char	**get_map(char **map)
 	return (map);
 }
 
-static int	get_player(int	player)
+static int	get_player()
 {
 	char	*line;
 	int		fd;
+	char	player;
 
 	fd = 0;
 	get_next_line(fd, &line, 0);
@@ -47,12 +49,13 @@ static int	get_player(int	player)
 	return (player);
 }
 
-static char	**get_piece(char **piece)
+static char	**get_piece()
 {
 	char	*line;
 	int		i;
 	int		j;
 	int		fd;
+	char	**piece;
 
 	fd = 0;
 	i = 0;
@@ -69,22 +72,65 @@ static char	**get_piece(char **piece)
 	return (piece);
 }
 
+static t_asset	find_last_p(t_asset asset)
+{
+	int		x;
+	int		y;
+
+	x = 0;
+	y = 0;
+	if (!(asset.last_p))
+		asset.last_p = malloc(sizeof(int) * 2);
+	while (asset.map[y] && asset.map[y][x] != '\0')
+	{
+		if (asset.map[y][x] == 'o')
+		{
+			asset.last_p[0] = y;
+			asset.last_p[1] = x;
+			return (asset);
+		}
+		if (asset.map[y] && asset.map[y][x + 1])
+			x++;
+		else
+		{
+			y++;
+			x = 0;
+		}
+	}
+	return (asset);
+}
+
+static void	ft_print_res(t_asset asset)
+{
+	ft_putnbr(asset.res[0]);
+	write(1, " ", 1);
+	ft_putnbr(asset.res[1] - 4);
+	write(1, "\n", 1);
+}
+
 int		main(void)
 {
-	int		player;
-	char	**map;
-	char	**piece;
+	t_asset	asset;
 	int		i;
 
 	i = 1;
-	player = get_player(player);
+	asset.player = get_player();
+	//asset.size_map = get_size();
 	while (i)
 	{
-		map = get_map(map);
-		piece = get_piece(piece);
-		ft_pos_map(map, piece, 0, 4);
+		asset.res = malloc(sizeof(int) * 2);
+		asset.res[0] = 0;
+		asset.res[1] = 0;
+		asset.map = get_map();
+		//write(1, "test", 4);
+		asset.piece = get_piece();
+		//write(1, "test2", 5);
+		asset = find_last_p(asset);
+		//write(1, "test3", 5);
+		asset = ft_pos_map(asset, 0, 4);
+		//write(1, "test4", 5);
+		//sleep(1);
+		ft_print_res(asset);
 	}
-	free(map);
-	free(piece);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 12:27:44 by plaurent          #+#    #+#             */
-/*   Updated: 2019/03/28 15:40:59 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/03/26 11:26:47 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,14 @@ static char	**get_map(char **map)
 	return (map);
 }
 
-static char	get_player(char player)
+static int	get_player(int	player)
 {
 	char	*line;
 	int		fd;
 
 	fd = 0;
 	get_next_line(fd, &line, 0);
-	if (line[10] - '0' == 1)
-		player = 'O';
-	else
-		player = 'X';
+	player = line[10] - '0';
 	return (player);
 }
 
@@ -74,7 +71,7 @@ static char	**get_piece(char **piece)
 
 int		main(void)
 {
-	char	player;
+	int		player;
 	char	**map;
 	char	**piece;
 	int		i;
@@ -85,7 +82,7 @@ int		main(void)
 	{
 		map = get_map(map);
 		piece = get_piece(piece);
-		ft_choice_strat;
+		ft_pos_map(map, piece, 0, 4);
 	}
 	free(map);
 	free(piece);

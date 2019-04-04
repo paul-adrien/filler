@@ -1,5 +1,5 @@
-seed = 9995
-O: error on input
+seed = 829
+players/plaurent.filler: Segfault at 163
 players/plaurent.filler won
 Score:
-9AGAINST9
+163AGAINST153

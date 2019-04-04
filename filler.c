@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 12:27:44 by plaurent          #+#    #+#             */
-/*   Updated: 2019/04/03 19:33:20 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/04/04 15:19:28 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ static char	**get_map()
 	i = 0;
 	fd = 0;
 	get_next_line(fd, &line, 0);
-	size[0] = (line[8] - '0') * 10 + (line[9] - '0');
-	size[1] = (line[11] - '0') * 10 + (line[12] - '0');
+	if (line[10] <= '9' && line[10] >= '0')
+		size[0] = (line[8] - '0') * 100 + (line[9] - '0') * 10 + (line[10] - '0');
+	else
+		size[0] = (line[8] - '0') * 10 + (line[9] - '0');
 	map = (char **)malloc(sizeof(char *) * size[0] + 1);
 	get_next_line(fd, &line, 0);
 	free(line);
@@ -37,7 +39,7 @@ static char	**get_map()
 	return (map);
 }
 
-static int	get_player()
+static t_asset	get_player(t_asset asset)
 {
 	char	*line;
 	int		fd;
@@ -45,8 +47,18 @@ static int	get_player()
 
 	fd = 0;
 	get_next_line(fd, &line, 0);
-	player = line[10] - '0';
-	return (player);
+	player = line[10];
+	if (player == '2')
+	{
+		asset.player = 'X';
+		asset.adv = 'O';
+	}
+	else
+	{
+		asset.player = 'O';
+		asset.adv = 'X';
+	}
+	return (asset);
 }
 
 static char	**get_piece()
@@ -79,14 +91,17 @@ static t_asset	find_last_p(t_asset asset)
 
 	x = 0;
 	y = 0;
-	if (!(asset.last_p))
-		asset.last_p = malloc(sizeof(int) * 2);
-	while (asset.map[y] && asset.map[y][x] != '\0')
+	asset.last_p = malloc(sizeof(int) * 2);
+	asset.last_p[0] = 0;
+	asset.last_p[1] = 0;
+	while (asset.lmap && asset.map[y] && asset.lmap[y])
 	{
-		if (asset.map[y][x] == 'o')
+		if (asset.map[y][x] != asset.lmap[y][x])
 		{
 			asset.last_p[0] = y;
 			asset.last_p[1] = x;
+			//ft_putnbr(asset.last_p[0]);
+			//ft_putnbr(asset.last_p[1]);
 			return (asset);
 		}
 		if (asset.map[y] && asset.map[y][x + 1])
@@ -97,16 +112,36 @@ static t_asset	find_last_p(t_asset asset)
 			x = 0;
 		}
 	}
+	//ft_putnbr(asset.last_p[0]);
+	//ft_putnbr(asset.last_p[1]);
 	return (asset);
 }
 
-static void	ft_print_res(t_asset asset)
+static t_asset	ft_print_res(t_asset asset)
 {
 	ft_putnbr(asset.res[0]);
 	write(1, " ", 1);
 	ft_putnbr(asset.res[1] - 4);
 	write(1, "\n", 1);
+	asset.res[0] = 0;
+	asset.res[1] = 0;
+	return (asset);
 }
+
+/*void	ft_test(t_asset asset)
+{
+	FILE* fichier = NULL;
+	int		i = 0;
+
+	fichier = fopen("test.txt", "w");
+
+	if (fichier != NULL)
+	{
+		while (i++ <= 23)
+			fprintf(fichier, "%s\n", asset.map[i]);
+		fclose(fichier);
+	}
+}*/
 
 int		main(void)
 {
@@ -114,23 +149,25 @@ int		main(void)
 	int		i;
 
 	i = 1;
-	asset.player = get_player();
+	asset = get_player(asset);
 	//asset.size_map = get_size();
 	while (i)
 	{
-		asset.res = malloc(sizeof(int) * 2);
-		asset.res[0] = 0;
-		asset.res[1] = 0;
+		//asset.res = malloc(sizeof(int) * 2);
+		//asset.res[0] = 0;
+		//asset.res[1] = 0;
 		asset.map = get_map();
 		//write(1, "test", 4);
 		asset.piece = get_piece();
 		//write(1, "test2", 5);
+		//ft_test(asset);
 		asset = find_last_p(asset);
 		//write(1, "test3", 5);
 		asset = ft_pos_map(asset, 0, 4);
 		//write(1, "test4", 5);
 		//sleep(1);
-		ft_print_res(asset);
+		asset = ft_print_res(asset);
+		asset.lmap = asset.map;
 	}
 	return (0);
 }

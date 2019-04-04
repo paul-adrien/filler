@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 13:34:26 by plaurent          #+#    #+#             */
-/*   Updated: 2019/04/03 17:07:58 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/04/04 14:55:35 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ typedef struct	s_point
 typedef struct	s_asset
 {
 	char	player;
+	char	adv;
 	//t_point	size_map;
 	//t_point	size_piece;
 	char	**map;
+	char	**lmap;
 	char	**piece;
 	int		*last_p;
 	int		*res;

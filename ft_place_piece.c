@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 17:11:53 by plaurent          #+#    #+#             */
-/*   Updated: 2019/04/04 14:06:46 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/04/18 18:34:44 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,45 +118,61 @@ static int	ft_test2(t_asset asset, int y, int x)
 	return (k);
 }
 
-static int	*ft_test(t_asset asset, int y, int x)
+static t_asset	count_score(t_asset asset, int y, int x)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	asset.score = 0;
+	while (asset.piece[i] && asset.piece[i][j] != '\0')
+	{
+		if (asset.piece[i][j] == '*')
+		{
+			asset.score = asset.score + asset.heat_map[y][x];
+		}
+		if (asset.piece[i] && asset.piece[i][j + 1])
+		{
+			j++;
+			x++;
+		}
+		else
+		{
+			i++;
+			y++;
+			x = x - j + 1;
+			j = 0;
+		}
+	}
+	return (asset);
+}
+
+static t_asset	ft_test(t_asset asset, int y, int x)
 {
 	int		k;
 	int		n1;
 	int		n2;
 
-	//ft_putnbr(y);
-	//ft_putnbr(x);
-	//write(1, "|", 1);
 	if (x >= 0 && y >= 0)
 	{
 		k = ft_test2(asset, y, x);
 		if (!asset.piece[k] && ft_check(asset, y, x) <= 1)
 		{
-			n1 = ((asset.last_p[0] - y) * (asset.last_p[0] - y)) + ((asset.last_p[1] - x) * (asset.last_p[1] - x));
-			if (asset.res[0] != 0 && asset.res[1] != 0)
+			//ft_putnbr(y);
+			//ft_putnbr(x);
+			//ft_putnbr(asset.score);
+			asset = count_score(asset, y, x);
+			//ft_putnbr(asset.score);
+			if (asset.score < asset.tmp_score || asset.score == 0 || asset.tmp_score == 0)
 			{
-				n2 = ((asset.last_p[0] - asset.res[0]) * (asset.last_p[0] - asset.res[0])) + ((asset.last_p[1] - asset.res[1]) * (asset.last_p[1] - asset.res[1]));
-				if (n1 < n2)
-				{
-					asset.res[0] = y;
-					asset.res[1] = x;
-				}
-				//ft_putnbr(n1);
-				//ft_putnbr(n2);
+				asset.tmp_x = x;
+				asset.tmp_y = y;
+				asset.tmp_score = asset.score;
 			}
-			else
-			{
-				//write(1, "first", 5);
-				asset.res = malloc(sizeof(int) * 2);
-				asset.res[0] = y;
-				asset.res[1] = x;
-			}
-			//ft_putnbr(asset.res[0]);
-			//ft_putnbr(asset.res[1]);
-			//write(1, "/", 1);
 		}
 	}
-	return (asset.res);
+	return (asset);
 }
 
 static t_asset	ft_check_place(t_asset asset, int i, int j)
@@ -174,7 +190,7 @@ static t_asset	ft_check_place(t_asset asset, int i, int j)
 		//write(1, "test3.3", 7);
 		y = i - coord[0];
 		x = j - coord[1];
-		asset.res = ft_test(asset, y, x);
+		asset = ft_test(asset, y, x);
 		if (asset.piece[coord[0]][coord[1]] && asset.piece[coord[0]][coord[1] + 1])
 			coord[1] = coord[1] + 1;
 		else if (asset.piece[coord[0]] && asset.piece[coord[0] + 1])
@@ -197,7 +213,7 @@ t_asset			ft_pos_map(t_asset asset, int i, int j)
 				|| asset.map[i][j] == (asset.adv + 32))
 			return (ft_pos_map(asset, i, j = j + 1));
 		else
-			return (ft_pos_map(asset, i = i + 1, 4));
+			return (ft_pos_map(asset, i = i + 1, 0));
 	}
 	else if (asset.map[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 13:34:26 by plaurent          #+#    #+#             */
-/*   Updated: 2019/04/04 14:55:35 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/04/18 18:10:29 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,22 @@ typedef struct	s_asset
 {
 	char	player;
 	char	adv;
-	//t_point	size_map;
-	//t_point	size_piece;
+	int		**heat_map;
+	int		x;
+	int		y;
+	int		tmp_x;
+	int		tmp_y;
+	int		x_max;
+	int		y_max;
+	int		score;
+	int		tmp_score;
 	char	**map;
-	char	**lmap;
+	//char	**lmap;
+	char	**line;
 	char	**piece;
 	int		*last_p;
-	int		*res;
 }				t_asset;
 
 t_asset		ft_pos_map(t_asset asset, int i, int j);
+t_asset		create_heat_map(t_asset asset);
 #endif

@@ -6,37 +6,36 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 12:27:44 by plaurent          #+#    #+#             */
-/*   Updated: 2019/04/04 15:19:28 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/04/18 18:34:31 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_filler.h"
 
-static char	**get_map()
+static t_asset	get_map(t_asset asset)
 {
 	int		fd;
-	int		size[2];
-	char	*line;
+	char	**tab;
 	int		i;
-	char	**map;
+	char	*line;
 
 	i = 0;
 	fd = 0;
 	get_next_line(fd, &line, 0);
-	if (line[10] <= '9' && line[10] >= '0')
-		size[0] = (line[8] - '0') * 100 + (line[9] - '0') * 10 + (line[10] - '0');
-	else
-		size[0] = (line[8] - '0') * 10 + (line[9] - '0');
-	map = (char **)malloc(sizeof(char *) * size[0] + 1);
+	tab = ft_strsplit(line, ' ');
+	asset.y_max = ft_atoi(tab[1]);
+	asset.x_max = ft_atoi(tab[2]);
+	asset.map = (char **)malloc(sizeof(char *) * asset.y_max + 1);
 	get_next_line(fd, &line, 0);
 	free(line);
-	while (i <= size[0] - 1)
+	while (i <= asset.y_max - 1)
 	{
 		get_next_line(fd, &line, 0);
-		map[i++] = line;
+		asset.map[i++] = ft_strsub(line, 4, asset.x_max);
 	}
-	map[i] = NULL;
-	return (map);
+	asset.map[i] = NULL;
+	free(tab);
+	return (asset);
 }
 
 static t_asset	get_player(t_asset asset)
@@ -84,7 +83,7 @@ static char	**get_piece()
 	return (piece);
 }
 
-static t_asset	find_last_p(t_asset asset)
+/*static t_asset	find_last_p(t_asset asset)
 {
 	int		x;
 	int		y;
@@ -115,33 +114,66 @@ static t_asset	find_last_p(t_asset asset)
 	//ft_putnbr(asset.last_p[0]);
 	//ft_putnbr(asset.last_p[1]);
 	return (asset);
+}*/
+
+static t_asset		asset_init(t_asset asset)
+{
+	asset.x = 0;
+	asset.y = 0;
+	//asset.tmp_x = 0;
+	//asset.tmp_y = 0;
+	asset.x_max = 0;
+	asset.y_max = 0;
+	asset.score = 0;
+	asset.tmp_score = 0;
+	return (asset);
 }
 
 static t_asset	ft_print_res(t_asset asset)
 {
-	ft_putnbr(asset.res[0]);
+	ft_putnbr(asset.tmp_y);
 	write(1, " ", 1);
-	ft_putnbr(asset.res[1] - 4);
+	ft_putnbr(asset.tmp_x);
 	write(1, "\n", 1);
-	asset.res[0] = 0;
-	asset.res[1] = 0;
 	return (asset);
 }
 
-/*void	ft_test(t_asset asset)
+void	ft_test(t_asset asset)
 {
 	FILE* fichier = NULL;
 	int		i = 0;
+	int		j = 0;
 
 	fichier = fopen("test.txt", "w");
 
 	if (fichier != NULL)
 	{
-		while (i++ <= 23)
-			fprintf(fichier, "%s\n", asset.map[i]);
+		while (i <= asset.y_max)
+		{
+			while (j <= asset.x_max)
+			{
+				fprintf(fichier, "%d\n", asset.heat_map[i][j]);
+				//ft_putnbr(asset.heat_map[i][j]);
+				j++;
+			}
+			//ft_putstr(asset.map[i]);
+			//ft_putchar('\n');
+			j = 0;
+			i++;
+		}
 		fclose(fichier);
 	}
-}*/
+}
+
+static t_asset	ft_free_all(t_asset asset)
+{
+	free(asset.map);
+	free(asset.heat_map);
+	//free(line);
+	free(asset.piece);
+	asset.tmp_score = 0;
+	return (asset);
+}
 
 int		main(void)
 {
@@ -149,25 +181,19 @@ int		main(void)
 	int		i;
 
 	i = 1;
+	asset = asset_init(asset);
 	asset = get_player(asset);
-	//asset.size_map = get_size();
 	while (i)
 	{
-		//asset.res = malloc(sizeof(int) * 2);
-		//asset.res[0] = 0;
-		//asset.res[1] = 0;
-		asset.map = get_map();
-		//write(1, "test", 4);
+		asset = get_map(asset);
 		asset.piece = get_piece();
-		//write(1, "test2", 5);
-		//ft_test(asset);
-		asset = find_last_p(asset);
-		//write(1, "test3", 5);
-		asset = ft_pos_map(asset, 0, 4);
-		//write(1, "test4", 5);
-		//sleep(1);
+		asset = create_heat_map(asset);
+		//asset = find_last_p(asset);
+		asset = ft_pos_map(asset, 0, 0);
 		asset = ft_print_res(asset);
-		asset.lmap = asset.map;
+		//asset.lmap = asset.map;
+		ft_test(asset);
+		asset = ft_free_all(asset);
 	}
 	return (0);
 }

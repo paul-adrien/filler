@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 12:27:44 by plaurent          #+#    #+#             */
-/*   Updated: 2019/04/18 18:34:31 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/04/30 15:45:13 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	get_map(t_asset *asset)
 	}
 	asset->map[i] = NULL;
 	free(tab);
-	return (asset);
+	return (0);
 }
 
 static int		get_player(t_asset *asset)
@@ -163,10 +163,11 @@ void	ft_test(t_asset asset)
 		{
 			while (j <= asset.x_max)
 			{
-				fprintf(fichier, "%d\n", asset.heat_map[i][j]);
+				fprintf(fichier, "%d", asset.heat_map[i][j]);
 				//ft_putnbr(asset.heat_map[i][j]);
 				j++;
 			}
+			fprintf(fichier, "\n");
 			//ft_putstr(asset.map[i]);
 			//ft_putchar('\n');
 			j = 0;
@@ -200,9 +201,8 @@ int		main(void)
 			return (1);
 		if (get_piece(&asset) == 1)
 			return (1);
-		if (create_heat_map(&asset) == 1)
-			return (1);
-		asset = ft_pos_map(asset);
+		asset = create_heat_map(asset);
+		asset = ft_pos_map(asset, 0, 0);
 		asset = ft_print_res(asset);
 		ft_test(asset);
 		asset = ft_free_all(asset);

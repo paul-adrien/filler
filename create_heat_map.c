@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 12:28:38 by plaurent          #+#    #+#             */
-/*   Updated: 2019/04/18 15:46:12 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/04/30 15:41:55 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,19 +114,19 @@ static t_asset	init_heat_map(t_asset asset)
 	return (asset);
 }
 
-int			create_heat_map(t_asset *asset)
+t_asset		create_heat_map(t_asset asset)
 {
 	int		i;
 
 	i = 0;
-	if (!(asset->heat_map = (int **)malloc(sizeof(int *) * asset->y_max + 1)))
-		return (1);
-	while (i < asset->x_max)
+	if (!(asset.heat_map = (int **)malloc(sizeof(int *) * asset.y_max + 1)))
+		exit(0);
+	while (i < asset.x_max)
 	{
-		if (!(asset->heat_map[i++] = (int *)malloc(sizeof(int) * asset->x_max + 1)))
-			return (1);
+		if (!(asset.heat_map[i++] = (int *)malloc(sizeof(int) * asset.x_max + 1)))
+		exit(0);
 	}
 	asset = init_heat_map(asset);
 	asset = init_heat_map2(asset);
-	return (0);
+	return (asset);
 }

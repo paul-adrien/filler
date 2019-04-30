@@ -114,19 +114,19 @@ static t_asset	init_heat_map(t_asset asset)
 	return (asset);
 }
 
-t_asset			create_heat_map(t_asset asset)
+int			create_heat_map(t_asset *asset)
 {
 	int		i;
 
 	i = 0;
-	asset.heat_map = (int **)malloc(sizeof(int *) * asset.y_max + 1);
-		//return (NULL);
-	while (i < asset.x_max)
+	if (!(asset->heat_map = (int **)malloc(sizeof(int *) * asset->y_max + 1)))
+		return (1);
+	while (i < asset->x_max)
 	{
-		asset.heat_map[i++] = (int *)malloc(sizeof(int) * asset.x_max + 1);
-		//	return (NULL);
+		if (!(asset->heat_map[i++] = (int *)malloc(sizeof(int) * asset->x_max + 1)))
+			return (1);
 	}
 	asset = init_heat_map(asset);
 	asset = init_heat_map2(asset);
-	return (asset);
+	return (0);
 }

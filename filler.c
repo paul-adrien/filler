@@ -12,7 +12,7 @@
 
 #include "ft_filler.h"
 
-static t_asset	get_map(t_asset asset)
+static int	get_map(t_asset *asset)
 {
 	int		fd;
 	char	**tab;
@@ -21,66 +21,80 @@ static t_asset	get_map(t_asset asset)
 
 	i = 0;
 	fd = 0;
-	get_next_line(fd, &line, 0);
-	tab = ft_strsplit(line, ' ');
-	asset.y_max = ft_atoi(tab[1]);
-	asset.x_max = ft_atoi(tab[2]);
-	asset.map = (char **)malloc(sizeof(char *) * asset.y_max + 1);
-	get_next_line(fd, &line, 0);
+	if (get_next_line(fd, &line, 0) == -1)
+		return (1);
+	if (!(tab = ft_strsplit(line, ' ')))
+		return (1);
+	asset->y_max = ft_atoi(tab[1]);
+	asset->x_max = ft_atoi(tab[2]);
+	if (!(asset->map = (char **)malloc(sizeof(char *) * asset->y_max + 1)))
+		return (1);
+	if (get_next_line(fd, &line, 0) == -1)
+		return (1);
 	free(line);
-	while (i <= asset.y_max - 1)
+	while (i <= asset->y_max - 1)
 	{
-		get_next_line(fd, &line, 0);
-		asset.map[i++] = ft_strsub(line, 4, asset.x_max);
+		if (get_next_line(fd, &line, 0) == -1)
+			return (1);
+		if (!(asset->map[i++] = ft_strsub(line, 4, asset->x_max)))
+			return (1);
+		free(line);
 	}
-	asset.map[i] = NULL;
+	asset->map[i] = NULL;
 	free(tab);
 	return (asset);
 }
 
-static t_asset	get_player(t_asset asset)
+static int		get_player(t_asset *asset)
 {
 	char	*line;
 	int		fd;
 	char	player;
 
 	fd = 0;
-	get_next_line(fd, &line, 0);
+	if (!(get_next_line(fd, &line, 0)))
+		return (1);
 	player = line[10];
 	if (player == '2')
 	{
-		asset.player = 'X';
-		asset.adv = 'O';
+		asset->player = 'X';
+		asset->adv = 'O';
 	}
 	else
 	{
-		asset.player = 'O';
-		asset.adv = 'X';
+		asset->player = 'O';
+		asset->adv = 'X';
 	}
-	return (asset);
+	free(line);
+	return (0);
 }
 
-static char	**get_piece()
+static int	get_piece(t_asset *asset)
 {
 	char	*line;
 	int		i;
 	int		j;
 	int		fd;
-	char	**piece;
 
 	fd = 0;
 	i = 0;
 	j = 0;
-	get_next_line(fd, &line, 0);
+	if (!(get_next_line(fd, &line, 0)))
+		return (1);
 	i = line[6] - '0';
-	piece = (char **)malloc(sizeof(char *) * i + 1);
+	free(line);
+	asset->piece = (char **)malloc(sizeof(char *) * i + 1);
+	if (!asset->piece)
+		return (1);
 	while (i-- > 0)
 	{
-		get_next_line(fd, &line, 0);
-		piece[j++] = line;
+		if (get_next_line(fd, &line, 0) == -1)
+			return (1);
+		asset->piece[j++] = line;
 	}
-	piece[j] = NULL;
-	return (piece);
+	free(line);
+	asset->piece[j] = NULL;
+	return (0);
 }
 
 /*static t_asset	find_last_p(t_asset asset)
@@ -116,17 +130,14 @@ static char	**get_piece()
 	return (asset);
 }*/
 
-static t_asset		asset_init(t_asset asset)
+static void		asset_init(t_asset *asset)
 {
-	asset.x = 0;
-	asset.y = 0;
-	//asset.tmp_x = 0;
-	//asset.tmp_y = 0;
-	asset.x_max = 0;
-	asset.y_max = 0;
-	asset.score = 0;
-	asset.tmp_score = 0;
-	return (asset);
+	asset->x = 0;
+	asset->y = 0;
+	asset->x_max = 0;
+	asset->y_max = 0;
+	asset->score = 0;
+	asset->tmp_score = 0;
 }
 
 static t_asset	ft_print_res(t_asset asset)
@@ -169,7 +180,6 @@ static t_asset	ft_free_all(t_asset asset)
 {
 	free(asset.map);
 	free(asset.heat_map);
-	//free(line);
 	free(asset.piece);
 	asset.tmp_score = 0;
 	return (asset);
@@ -177,21 +187,23 @@ static t_asset	ft_free_all(t_asset asset)
 
 int		main(void)
 {
-	t_asset	asset;
+	t_asset		asset;
 	int		i;
 
 	i = 1;
-	asset = asset_init(asset);
-	asset = get_player(asset);
+	asset_init(&asset);
+	if (get_player(&asset) == 1)
+		return (1);
 	while (i)
 	{
-		asset = get_map(asset);
-		asset.piece = get_piece();
-		asset = create_heat_map(asset);
-		//asset = find_last_p(asset);
-		asset = ft_pos_map(asset, 0, 0);
+		if (get_map(&asset) == 1)
+			return (1);
+		if (get_piece(&asset) == 1)
+			return (1);
+		if (create_heat_map(&asset) == 1)
+			return (1);
+		asset = ft_pos_map(asset);
 		asset = ft_print_res(asset);
-		//asset.lmap = asset.map;
 		ft_test(asset);
 		asset = ft_free_all(asset);
 	}

@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 12:28:38 by plaurent          #+#    #+#             */
-/*   Updated: 2019/04/30 15:41:55 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/04/18 15:46:12 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 static t_asset	test(t_asset a, int y, int x)
 {
-//	ft_putchar(a.adv);
-//	ft_putnbr(x);
-//	ft_putnbr(y);
 	if (x + 1 < a.x_max && a.map[y][x + 1] == a.adv)
 		a.heat_map[y][x] = 1;
 	if (x - 1 > 0 && a.map[y][x - 1] == a.adv)
@@ -86,7 +83,7 @@ static t_asset	init_heat_map2(t_asset asset)
 	return (asset);
 }
 
-static t_asset	init_heat_map(t_asset asset)
+t_asset		init_heat_map(t_asset asset)
 {
 	int		x;
 	int		y;
@@ -111,22 +108,21 @@ static t_asset	init_heat_map(t_asset asset)
 		x = 0;
 		y++;
 	}
+	asset = init_heat_map2(asset);
 	return (asset);
 }
 
-t_asset		create_heat_map(t_asset asset)
+int		create_heat_map(t_asset *asset)
 {
 	int		i;
 
 	i = 0;
-	if (!(asset.heat_map = (int **)malloc(sizeof(int *) * asset.y_max + 1)))
-		exit(0);
-	while (i < asset.x_max)
+	if (!(asset->heat_map = (int **)malloc(sizeof(int *) * asset->y_max + 1)))
+		return (1);
+	while (i <= asset->x_max)
 	{
-		if (!(asset.heat_map[i++] = (int *)malloc(sizeof(int) * asset.x_max + 1)))
-		exit(0);
+		if (!(asset->heat_map[i++] = (int *)malloc(sizeof(int) * asset->x_max + 1)))
+			return (1);
 	}
-	asset = init_heat_map(asset);
-	asset = init_heat_map2(asset);
-	return (asset);
+	return (0);
 }

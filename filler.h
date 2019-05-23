@@ -48,6 +48,9 @@ typedef struct	s_asset
 	//int	*last_p2;
 }				t_asset;
 
+void		ft_inttabdel(int **tab);
+void		put_error(char **map, char **piece, char *line, int **heat_map);
+void		ft_strtabdel(char **str);
 t_asset		new_place(t_asset asset, int y, int x);
 void		free_all(t_asset *asset);
 int		get_piece(t_asset *asset);

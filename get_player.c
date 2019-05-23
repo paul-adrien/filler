@@ -18,7 +18,7 @@ int		get_player(t_asset *asset)
 		free(asset->line);
 		return (1);
 	}
-	free(asset->line);
+	ft_strdel(&asset->line);
 	asset->tab = test_line(asset->tab);
 	if (ft_strcmp(asset->tab[2], "p2") == 0)
 	{

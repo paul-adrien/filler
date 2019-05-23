@@ -24,7 +24,7 @@ int		piece_info(t_asset *asset)
 		free(asset->line);
 		return (1);
 	}
-	free(asset->line);
+	ft_strdel(&asset->line);
 	//if (ft_strcmp(asset->tab[0], "Piece") != 0) prblm pour la map 02
 	//{
 	//	free_tab(&asset->tab);

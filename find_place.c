@@ -55,35 +55,6 @@ static int	*ft_pos_piece(char **piece, int *pos)
 	return (0);
 }
 
-static int	ft_check(t_asset asset, int y, int x, int i)
-{
-	int		k;
-	int		l;
-
-	k = 0;
-	l = 0;
-	while (asset.piece[k] && asset.piece[k][l] != '\0')
-	{
-		if (asset.piece[k][l] == '*' && (asset.map[y][x] == asset.player || asset.map[y][x] == (asset.player + 32)))
-			i++;
-		if (asset.piece[k][l] == '*' && asset.map[y][x] == '\0')
-			return(2);
-		if (asset.piece[k] && asset.piece[k][l + 1])
-		{
-			l++;
-			x++;
-		}
-		else
-		{
-			k++;
-			y++;
-			x = x - l;
-			l = 0;
-		}
-	}
-	return (i);
-}
-
 static t_asset	check_place(t_asset asset, int i, int j)
 {
 	int		*coord;

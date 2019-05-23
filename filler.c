@@ -76,20 +76,13 @@ static t_asset	ft_print_res(t_asset asset)
 static t_asset	sp_free_all(t_asset asset)
 {
 	if (asset.map)
-	{
-		free(asset.map);
-		asset.map = NULL;
-	}
+		ft_strtabdel(asset.map);
 	if (asset.heat_map)
-	{
 		free(asset.heat_map);
-		asset.heat_map = NULL;
-	}
 	if (asset.piece)
-	{
 		free(asset.piece);
-		asset.piece = NULL;
-	}
+	if (asset.line)
+		ft_strdel(&asset.line);
 	asset.tmp_score = 0;
 	return (asset);
 }
@@ -103,7 +96,7 @@ int		main(void)
 	while (1)
 	{
 		if (map_info(&asset) == 1)
-			return (1);
+			put_error(asset.map, asset.tab, asset.line, NULL);
 		if (get_map(&asset) == 1)
 			return (1);
 		if (piece_info(&asset) == 1)

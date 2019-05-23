@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   filler.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/19 12:27:44 by plaurent          #+#    #+#             */
-/*   Updated: 2019/04/18 18:34:31 by plaurent         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "ft_filler.h"
+#include "filler.h"
 
 static char	**test_line(char **tab)
 {
@@ -21,28 +9,23 @@ static char	**test_line(char **tab)
 	return (tab);
 }
 
-int		get_player(t_asset *asset, char *line)
+int		get_player(t_asset *asset)
 {
-	if (get_next_line(0, &line, 0) != 1)
+	if (get_next_line(0, &asset->line, 0) != 1)
 		return (1);
-	if (!(asset->tab = ft_strsplit(line, ' ')))
+	if (!(asset->tab = ft_strsplit(asset->line, ' ')))
 	{
-		free(line);
+		free(asset->line);
 		return (1);
 	}
-	free(line);
+	free(asset->line);
 	asset->tab = test_line(asset->tab);
 	if (ft_strcmp(asset->tab[2], "p2") == 0)
 	{
 		asset->player = 'X';
 		asset->adv = 'O';
 	}
-	else if (ft_strcmp(asset->tab[2], "p1") == 0)
-	{
-		asset->player = 'O';
-		asset->adv = 'X';
-	}
-	else
+	else if (ft_strcmp(asset->tab[2], "p1") != 0)
 	{
 		free_tab(&asset->tab);
 		return (1);

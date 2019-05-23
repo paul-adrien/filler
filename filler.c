@@ -6,11 +6,11 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 12:27:44 by plaurent          #+#    #+#             */
-/*   Updated: 2019/04/18 18:34:31 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/05/23 14:06:34 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_filler.h"
+#include "filler.h"
 
 /*static t_asset	find_last_p(t_asset asset)
 {
@@ -48,17 +48,20 @@
 	return (asset);
 }*/
 
-static t_asset		asset_init(t_asset asset)
+static void		asset_init(t_asset *asset)
 {
-	asset.x = 0;
-	asset.y = 0;
-	asset.y_pmax = 0;
-	asset.x_pmax = 0;
-	asset.x_max = 0;
-	asset.y_max = 0;
-	asset.score = 0;
-	asset.tmp_score = 0;
-	return (asset);
+	asset->line = NULL;
+	asset->player = 'O';
+	asset->adv = 'X';
+	asset->x = 0;
+	asset->y = 0;
+	asset->y_pmax = 0;
+	asset->x_pmax = 0;
+	asset->x_max = 0;
+	asset->y_max = 0;
+	asset->score = 0;
+	asset->tmp_score = 0;
+	asset->error = 0;
 }
 
 static t_asset	ft_print_res(t_asset asset)
@@ -70,7 +73,7 @@ static t_asset	ft_print_res(t_asset asset)
 	return (asset);
 }
 
-static t_asset	ft_free_all(t_asset asset)
+static t_asset	sp_free_all(t_asset asset)
 {
 	if (asset.map)
 	{
@@ -94,32 +97,27 @@ static t_asset	ft_free_all(t_asset asset)
 int		main(void)
 {
 	t_asset	asset;
-	int		i;
-	char		*line;
 
-	i = 1;
-	asset = asset_init(asset);
-	get_player(&asset, line);
-	while (i)
+	asset_init(&asset);
+	get_player(&asset);
+	while (1)
 	{
-		if (map_info(&asset, line) == 1)
+		if (map_info(&asset) == 1)
 			return (1);
 		if (get_map(&asset) == 1)
 			return (1);
-		if (piece_info(&asset, line) == 1)
+		if (piece_info(&asset) == 1)
 			return (1);
 		if (get_piece(&asset) == 1)
 			return (1);
 		if (create_heat_map(&asset) == 1)
 			return (1);
-		//asset = find_last_p(asset);
 		asset = init_heat_map(asset);
-		asset = ft_pos_map(asset, 0, 0);
-		//asset.lmap = asset.map;
+		asset = find_place(asset, 0, 0);
+		if (asset.error == 1)
+			return (1);
 		asset = ft_print_res(asset);
-		//ft_test(asset);
-		asset = ft_free_all(asset);
+		asset = sp_free_all(asset);
 	}
-	
 	return (0);
 }

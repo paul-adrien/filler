@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   filler.c                                           :+:      :+:    :+:   */
+/*   get_piece.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/19 12:27:44 by plaurent          #+#    #+#             */
-/*   Updated: 2019/04/18 18:34:31 by plaurent         ###   ########.fr       */
+/*   Created: 2019/05/22 18:25:16 by plaurent          #+#    #+#             */
+/*   Updated: 2019/05/23 14:03:16 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_filler.h"
+#include "filler.h"
 
-int		piece_info(t_asset *asset, char *line)
+int		piece_info(t_asset *asset)
 {
 	char	**tab;
 
 	tab = NULL;
-	if (get_next_line(0, &line, 0) != 1)
+	if (get_next_line(0, &asset->line, 0) != 1)
 		return (1);
-	if (!(tab = ft_strsplit(line, ' ')))
+	if (!(tab = ft_strsplit(asset->line, ' ')))
 	{
-		free(line);
+		free(asset->line);
 		return (1);
 	}
-	free(line);
+	free(asset->line);
 	//if (ft_strcmp(asset->tab[0], "Piece") != 0) prblm pour la map 02
 	//{
 	//	free_tab(&asset->tab);

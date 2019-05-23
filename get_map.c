@@ -6,22 +6,22 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 12:27:44 by plaurent          #+#    #+#             */
-/*   Updated: 2019/04/18 18:34:31 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/05/23 14:02:20 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_filler.h"
+#include "filler.h"
 
-int		map_info(t_asset *asset, char *line)
+int		map_info(t_asset *asset)
 {
-	if ((get_next_line(0, &line, 0) != 1))
+	if ((get_next_line(0, &asset->line, 0) != 1))
 		return (1);
-	if (!(asset->tab = ft_strsplit(line, ' ')))
+	if (!(asset->tab = ft_strsplit(asset->line, ' ')))
 	{
-		free(line);
+		free(asset->line);
 		return (1);
 	}
-	free(line);
+	free(asset->line);
 	if (ft_strcmp(asset->tab[0], "Plateau") != 0)
 	{
 		free_tab(&asset->tab);
@@ -34,12 +34,12 @@ int		map_info(t_asset *asset, char *line)
 		return (1);
 	if (!(asset->map = (char **)malloc(sizeof(char *) * asset->y_max + 1)))	
 		return (1);
-	if (get_next_line(0, &line, 0) != 1)
+	if (get_next_line(0, &asset->line, 0) != 1)
 	{
 		free(asset->map);
 		return (1);
 	}
-	free(line);
+	free(asset->line);
 	return (0);
 }
 

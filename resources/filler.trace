@@ -1,7 +1,5 @@
-seed = 9903
+seed = 7064
 O: error on input
-players/plaurent.filler: Segfault at 3
-X: error on input
-players/hcao.filler won
+players/plaurent.filler won
 Score:
-3AGAINST18
+228AGAINST99

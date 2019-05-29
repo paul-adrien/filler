@@ -21,7 +21,7 @@ int		piece_info(t_asset *asset)
 		return (1);
 	if (!(tab = ft_strsplit(asset->line, ' ')))
 	{
-		free(asset->line);
+		ft_strdel(&asset->line);
 		return (1);
 	}
 	ft_strdel(&asset->line);
@@ -46,25 +46,26 @@ int		get_piece(t_asset *asset)
 
 	i = 0;
 	res = 0;
-	if (!(asset->piece = (char **)malloc(sizeof(char *) * asset->y_pmax + 1)))
-		return (1);
+	if (!(asset->piece = (char **)malloc(sizeof(char *) * (asset->y_pmax + 1))))
+		perror(NULL);
+		//put_error(asset->map, NULL, NULL, NULL);
 	while (i <= asset->y_pmax - 1)
 	{
 		if ((res = get_next_line(0, &line, 0)) != 1)
 		{
 			if (res == 0)
-				free(line);
-			while (i > 0)
-				free(asset->piece[i--]);
-			free(asset->piece);
-			asset->piece = NULL;
+				ft_strdel(&line);
+			//while (i > 0)
+				//free(asset->piece[i--]);
+			//free(asset->piece);
+			//asset->piece = NULL; pas utile si bien fait dans put error
 			return (1);
 		}
 		//if (check_line(asset, &line, i) == 1)
 		//	return (1);
 		if (!(asset->piece[i++] = ft_strsub(line, 0, asset->x_pmax)))
 			return (0);
-		free(line);
+		ft_strdel(&line);
 	}
 	asset->piece[i] = NULL;
 	return (0);

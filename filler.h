@@ -38,14 +38,12 @@ typedef struct	s_asset
 	int		y_pmax;
 	int		score;
 	int		tmp_score;
-	//char	**lmap;
 	char	**map;
 	char	**tab;
 	char	*line;
 	char	**piece;
-	int		error;
-	//int	*last_p;
-	//int	*last_p2;
+	int		c1;
+	int		c2;
 }				t_asset;
 
 void		ft_inttabdel(int **tab);

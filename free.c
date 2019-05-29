@@ -20,6 +20,7 @@ void	free_tab(char ***tab)
 	while ((*tab)[i] != NULL)
 		free((*tab)[i++]);
 	free(*tab);
+	*tab = NULL;
 }
 
 void	ft_inttabdel(int **tab)
@@ -46,24 +47,25 @@ void	ft_strtabdel(char **str)
 		ft_strdel(&str[i]);
 		i++;
 	}
-	free(str);
+	if (str)
+		free(str);
 	str = NULL;
 }
 
 void		put_error(char **map, char **piece, char *line, int **heat_map)
 {
 	if (map)
-		ft_strtabdel(map);
+		free(map);
 	if (piece)
-		ft_strtabdel(piece);
+		free(piece);
 	if (line)
-		ft_strdel(&line);
+		free(&line);
 	if (heat_map)
-		ft_inttabdel(heat_map);
+		free(heat_map);
 	exit(1);
 }
 
-void		free_all(t_asset *asset)
+/*void		free_all(t_asset *asset)
 {
 	int		i;
 
@@ -83,3 +85,4 @@ void		free_all(t_asset *asset)
 	free(asset->piece);
 	asset->piece = NULL;
 }
+*/

@@ -117,11 +117,11 @@ int		create_heat_map(t_asset *asset)
 	int		i;
 
 	i = 0;
-	if (!(asset->heat_map = (int **)malloc(sizeof(int *) * asset->y_max + 1)))
+	if (!(asset->heat_map = (int **)malloc(sizeof(int *) * (asset->y_max + 1))))
 		return (1);
 	while (i <= asset->x_max)
 	{
-		if (!(asset->heat_map[i++] = (int *)malloc(sizeof(int) * asset->x_max + 1)))
+		if (!(asset->heat_map[i++] = (int *)malloc(sizeof(int) * (asset->x_max + 1))))
 			return (1);
 	}
 	return (0);

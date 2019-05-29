@@ -5,7 +5,7 @@ static char	**test_line(char **tab)
 	if (ft_strcmp(tab[0], "$$$") != 0 || ft_strcmp(tab[1], "exec") != 0
 		|| ft_strcmp(tab[3], ":") != 0
 		|| ft_strcmp(tab[4], "[players/plaurent.filler]") != 0)
-		tab[2] = "er";
+		tab = NULL;
 	return (tab);
 }
 
@@ -15,11 +15,15 @@ int		get_player(t_asset *asset)
 		return (1);
 	if (!(asset->tab = ft_strsplit(asset->line, ' ')))
 	{
-		free(asset->line);
+		ft_strdel(&asset->line);
 		return (1);
 	}
 	ft_strdel(&asset->line);
-	asset->tab = test_line(asset->tab);
+	if ((asset->tab = test_line(asset->tab)) == NULL)
+	{
+		free_tab(&asset->tab);
+		return (1);
+	}
 	if (ft_strcmp(asset->tab[2], "p2") == 0)
 	{
 		asset->player = 'X';

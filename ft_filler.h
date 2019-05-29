@@ -38,13 +38,11 @@ typedef struct	s_asset
 	int		y_pmax;
 	int		score;
 	int		tmp_score;
-	char	**lmap;
 	char	**map;
 	char	**tab;
 	char	**line;
 	char	**piece;
-	int	*last_p;
-	int	*last_p2;
+	int		*coord;
 }				t_asset;
 
 void		free_all(t_asset *asset);

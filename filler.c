@@ -12,45 +12,13 @@
 
 #include "filler.h"
 
-/*static t_asset	find_last_p(t_asset asset)
-{
-	int		x;
-	int		y;
-	x = 0;
-	y = 0;
-	asset.last_p = malloc(sizeof(int) * 2);
-	asset.last_p2 = malloc(sizeof(int) * 2);
-	asset.last_p2[0] = 0;
-	asset.last_p2[1] = 0;
-	asset.last_p[0] = 0;
-	asset.last_p[1] = 0;
-	while (asset.lmap && asset.map[y] && asset.lmap[y])
-	{
-		if (asset.map[y][x] != asset.lmap[y][x] && asset.map[y][x] == asset.player)
-		{
-			asset.last_p2[0] = y;
-			asset.last_p2[1] = x;
-		}
-		if (asset.map[y][x] != asset.lmap[y][x] && asset.map[y][x] == asset.adv)
-		{
-			asset.last_p[0] = y;
-			asset.last_p[1] = x;
-		}
-		if (asset.map[y] && asset.map[y][x + 1])
-			x++;
-		else
-		{
-			y++;
-			x = 0;
-		}
-		if (asset)
-	}
-	return (asset);
-}*/
-
 static void		asset_init(t_asset *asset)
 {
+	asset->heat_map = NULL;
+	asset->map = NULL;
 	asset->line = NULL;
+	asset->piece = NULL;
+	asset->tab = NULL;
 	asset->player = 'O';
 	asset->adv = 'X';
 	asset->x = 0;
@@ -61,7 +29,6 @@ static void		asset_init(t_asset *asset)
 	asset->y_max = 0;
 	asset->score = 0;
 	asset->tmp_score = 0;
-	asset->error = 0;
 }
 
 static t_asset	ft_print_res(t_asset asset)
@@ -76,13 +43,22 @@ static t_asset	ft_print_res(t_asset asset)
 static t_asset	sp_free_all(t_asset asset)
 {
 	if (asset.map)
-		ft_strtabdel(asset.map);
+	{
+		free(asset.map);
+		asset.map = NULL;
+	}
 	if (asset.heat_map)
+	{
 		free(asset.heat_map);
+		asset.heat_map = NULL;
+	}
 	if (asset.piece)
+	{
 		free(asset.piece);
-	if (asset.line)
-		ft_strdel(&asset.line);
+		asset.piece = NULL;
+	}
+	//if (asset.line) peut etre pas necessaire
+		//ft_strdel(&asset.line);
 	asset.tmp_score = 0;
 	return (asset);
 }
@@ -92,23 +68,27 @@ int		main(void)
 	t_asset	asset;
 
 	asset_init(&asset);
-	get_player(&asset);
+	if (get_player(&asset) == 1)
+		return (1);
 	while (1)
 	{
 		if (map_info(&asset) == 1)
-			put_error(asset.map, asset.tab, asset.line, NULL);
+			exit(1);
+			//put_error(NULL, NULL, asset.line, NULL);
 		if (get_map(&asset) == 1)
-			return (1);
+			exit(1);
+			//put_error(asset.map, NULL, NULL, NULL);
 		if (piece_info(&asset) == 1)
-			return (1);
+			exit(1);
+			//put_error(asset.map, NULL, asset.line, NULL);
 		if (get_piece(&asset) == 1)
-			return (1);
+			exit(1);
+			//put_error(asset.map, asset.piece, NULL, NULL);
 		if (create_heat_map(&asset) == 1)
-			return (1);
+			exit(1);
+			//put_error(asset.map, asset.piece, NULL, asset.heat_map);
 		asset = init_heat_map(asset);
 		asset = find_place(asset, 0, 0);
-		if (asset.error == 1)
-			return (1);
 		asset = ft_print_res(asset);
 		asset = sp_free_all(asset);
 	}

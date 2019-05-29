@@ -28,55 +28,48 @@ int		st_sqrt(int nb)
 	return (--i);
 }
 
-static int	*ft_pos_piece(char **piece, int *pos)
+static int	ft_pos_piece(t_asset *asset)
 {
 	int		k;
 	int		l;
 
-	k = pos[0];
-	l = pos[1];
-	while (piece[k][l] && piece[k][l] != '*')
+	k = asset->c1;
+	l = asset->c2;
+	while (asset->piece[k][l] && asset->piece[k][l] != '*')
 	{
 		l++;
-		if (!piece[k][l])
+		if (!asset->piece[k][l])
 		{
 			k++;
 			l = 0;
 		}
-		if (!piece[k])
+		if (!asset->piece[k])
 			return (0);
 	}
-	if (piece[k][l] && piece[k][l] == '*')
+	if (asset->piece[k][l] && asset->piece[k][l] == '*')
 	{
-		pos[0] = k;
-		pos[1] = l;
-		return (pos);
+		asset->c1 = k;
+		asset->c2 = l;
+		return (1);
 	}
 	return (0);
 }
 
 static t_asset	check_place(t_asset asset, int i, int j)
 {
-	int		*coord;
-
-	if (!(coord = (int *)malloc(sizeof(int) * 3)))
+	asset.c1 = 0;
+	asset.c2 = 0;
+	while (ft_pos_piece(&asset))
 	{
-		asset.error = 1;
-		return (asset);
-	}
-	coord[0] = 0;
-	coord[1] = 0;
-	while ((coord = ft_pos_piece(asset.piece, coord)))
-	{
-		asset.y = i - coord[0];
-		asset.x = j - coord[1];
+		asset.y = i - asset.c1;
+		asset.x = j - asset.c2;
 		asset = new_place(asset, asset.y, asset.x);
-		if (asset.piece[coord[0]][coord[1]] && asset.piece[coord[0]][coord[1] + 1])
-			coord[1] = coord[1] + 1;
-		else if (asset.piece[coord[0]] && asset.piece[coord[0] + 1])
+		if (asset.piece[asset.c1][asset.c2] && asset.piece[asset.c1][asset.c2 + 1])
+			asset.c2 = asset.c2 + 1;
+		else if (asset.piece[asset.c1] && asset.piece[asset.c1 + 1])
 		{
-			coord[1] = 0;
-			coord[0] = coord[0] + 1;
+			asset.c2 = 0;
+			asset.c1 = asset.c1 + 1;
 		}
 		else
 			return (asset);
@@ -97,8 +90,6 @@ t_asset			find_place(t_asset asset, int i, int j)
 	else if (asset.map[i])
 	{
 		asset = check_place(asset, i, j);
-		if (asset.error == 1)
-			return (asset);
 		return (find_place(asset, i, j = j + 1));
 	}
 	else

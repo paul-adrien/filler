@@ -6,7 +6,7 @@
 #    By: plaurent <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/22 17:43:57 by plaurent          #+#    #+#              #
-#    Updated: 2019/05/23 13:50:03 by plaurent         ###   ########.fr        #
+#    Updated: 2019/05/29 16:11:54 by plaurent         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME = plaurent.filler
 LIB = libft/libft.a
 
 SRC = get_map.c free.c get_piece.c create_heat_map.c get_player.c filler.c	\
-	find_place.c
+	find_place.c choice_place.c
 
 HEADER = filler.h
 

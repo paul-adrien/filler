@@ -5,30 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/22 18:08:58 by plaurent          #+#    #+#             */
-/*   Updated: 2019/05/23 14:16:18 by plaurent         ###   ########.fr       */
+/*   Created: 2019/05/29 16:07:29 by plaurent          #+#    #+#             */
+/*   Updated: 2019/05/29 18:40:42 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-int		st_sqrt(int nb)
-{
-	int i;
-
-	i = 1;
-	if (nb <= 0)
-		return (0);
-	while (i * i <= nb && i <= 46340)
-	{
-		if (i * i == nb)
-			return (i);
-		i++;
-	}
-	return (--i);
-}
-
-static int	ft_pos_piece(t_asset *asset)
+static int		ft_pos_piece(t_asset *asset)
 {
 	int		k;
 	int		l;
@@ -63,8 +47,9 @@ static t_asset	check_place(t_asset asset, int i, int j)
 	{
 		asset.y = i - asset.c1;
 		asset.x = j - asset.c2;
-		asset = new_place(asset, asset.y, asset.x);
-		if (asset.piece[asset.c1][asset.c2] && asset.piece[asset.c1][asset.c2 + 1])
+		asset = choice_place(asset, asset.y, asset.x);
+		if (asset.piece[asset.c1][asset.c2]
+			&& asset.piece[asset.c1][asset.c2 + 1])
 			asset.c2 = asset.c2 + 1;
 		else if (asset.piece[asset.c1] && asset.piece[asset.c1 + 1])
 		{

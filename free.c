@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 18:06:23 by plaurent          #+#    #+#             */
-/*   Updated: 2019/05/23 14:16:29 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/05/29 18:01:12 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,66 +23,28 @@ void	free_tab(char ***tab)
 	*tab = NULL;
 }
 
-void	ft_inttabdel(int **tab)
+void	ft_inttabdel(int ***tab)
 {
 	int i;
 
 	i = 0;
-	while (tab[i])
+	while ((*tab)[i] != NULL)
 	{
-		free(tab[i]);
+		free((*tab)[i]);
 		i++;
 	}
-	free(tab);
-	//tab = NULL;
+	free(*tab);
+	*tab = NULL;
 }
 
-void	ft_strtabdel(char **str)
+void	last_free(char **map, char **piece, char *line, int **heat_map)
 {
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		ft_strdel(&str[i]);
-		i++;
-	}
-	if (str)
-		free(str);
-	str = NULL;
+	if (map != NULL)
+		free_tab(&map);
+	if (piece != NULL)
+		free_tab(&piece);
+	if (line != NULL)
+		ft_strdel(&line);
+	if (heat_map != NULL)
+		ft_inttabdel(&heat_map);
 }
-
-void		put_error(char **map, char **piece, char *line, int **heat_map)
-{
-	if (map)
-		free(map);
-	if (piece)
-		free(piece);
-	if (line)
-		free(&line);
-	if (heat_map)
-		free(heat_map);
-	exit(1);
-}
-
-/*void		free_all(t_asset *asset)
-{
-	int		i;
-
-	i = 0;
-	while (i < asset->y_max)
-		free(asset->map[i++]);
-	free(asset->map);
-	asset->map = NULL;
-	i = 0;
-	while (i < asset->y_max)
-		free(asset->heat_map[i++]);
-	free(asset->heat_map);
-	asset->heat_map = NULL;
-	i = 0;
-	while (i < asset->y_max)
-		free(asset->piece[i++]);
-	free(asset->piece);
-	asset->piece = NULL;
-}
-*/

@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 11:16:28 by plaurent          #+#    #+#             */
-/*   Updated: 2019/03/12 16:10:12 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/05/29 18:37:56 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ static char			*st_refresh_str(char *str)
 int					get_next_line(int const fd, char **line, int error)
 {
 	char		buff[BUFF_SIZE + 1];
-	static char	*str[1024];
-	int			size;
+	static char	*str[4096];
+	int			s;
 
 	if (error)
 	{
@@ -60,10 +60,9 @@ int					get_next_line(int const fd, char **line, int error)
 	if (fd < 0 || BUFF_SIZE < 1 || !line || read(fd, buff, 0) < 0 ||
 			(!(str[fd]) && (str[fd] = ft_strnew(0)) == NULL))
 		return (-1);
-	while (!(ft_strchr(str[fd], '\n')) &&
-	(size = read(fd, buff, BUFF_SIZE)) > 0)
+	while (!(ft_strchr(str[fd], '\n')) && (s = read(fd, buff, BUFF_SIZE)) > 0)
 	{
-		buff[size] = '\0';
+		buff[s] = '\0';
 		if (!(str[fd] = st_strjoin(str[fd], buff)))
 			return (-1);
 	}

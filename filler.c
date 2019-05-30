@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 12:27:44 by plaurent          #+#    #+#             */
-/*   Updated: 2019/05/23 14:06:34 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/05/29 18:22:29 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static t_asset	ft_print_res(t_asset asset)
 	return (asset);
 }
 
-static t_asset	sp_free_all(t_asset asset)
+static t_asset	free_all(t_asset asset)
 {
 	if (asset.map)
 	{
@@ -57,13 +57,13 @@ static t_asset	sp_free_all(t_asset asset)
 		free(asset.piece);
 		asset.piece = NULL;
 	}
-	//if (asset.line) peut etre pas necessaire
-		//ft_strdel(&asset.line);
 	asset.tmp_score = 0;
+	asset.tmp_x = 0;
+	asset.tmp_y = 0;
 	return (asset);
 }
 
-int		main(void)
+int				main(void)
 {
 	t_asset	asset;
 
@@ -73,24 +73,20 @@ int		main(void)
 	while (1)
 	{
 		if (map_info(&asset) == 1)
-			exit(1);
-			//put_error(NULL, NULL, asset.line, NULL);
+			break ;
 		if (get_map(&asset) == 1)
-			exit(1);
-			//put_error(asset.map, NULL, NULL, NULL);
+			break ;
 		if (piece_info(&asset) == 1)
-			exit(1);
-			//put_error(asset.map, NULL, asset.line, NULL);
+			break ;
 		if (get_piece(&asset) == 1)
-			exit(1);
-			//put_error(asset.map, asset.piece, NULL, NULL);
+			break ;
 		if (create_heat_map(&asset) == 1)
-			exit(1);
-			//put_error(asset.map, asset.piece, NULL, asset.heat_map);
+			break ;
 		asset = init_heat_map(asset);
 		asset = find_place(asset, 0, 0);
 		asset = ft_print_res(asset);
-		asset = sp_free_all(asset);
+		asset = free_all(asset);
 	}
+	last_free(asset.map, asset.piece, asset.line, asset.heat_map);
 	return (0);
 }

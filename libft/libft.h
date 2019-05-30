@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/08 10:40:57 by plaurent          #+#    #+#             */
-/*   Updated: 2019/03/20 13:37:45 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/05/29 18:41:09 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 # define BUFF_SIZE 1
 
 # include <unistd.h>
-# include <string.h>
 # include <stdlib.h>
 
 typedef struct	s_list

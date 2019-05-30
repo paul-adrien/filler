@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_player.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/29 18:09:59 by plaurent          #+#    #+#             */
+/*   Updated: 2019/05/29 18:20:14 by plaurent         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filler.h"
 
 static char	**test_line(char **tab)
@@ -9,7 +21,7 @@ static char	**test_line(char **tab)
 	return (tab);
 }
 
-int		get_player(t_asset *asset)
+int			get_player(t_asset *asset)
 {
 	if (get_next_line(0, &asset->line, 0) != 1)
 		return (1);

@@ -29,6 +29,7 @@ static void		asset_init(t_asset *asset)
 	asset->y_max = 0;
 	asset->score = 0;
 	asset->tmp_score = 0;
+	asset->end = 0;
 }
 
 static t_asset	ft_print_res(t_asset asset)
@@ -57,6 +58,8 @@ static t_asset	free_all(t_asset asset)
 		free(asset.piece);
 		asset.piece = NULL;
 	}
+	if (asset.tmp_score == 0)
+		asset.end = 1;
 	asset.tmp_score = 0;
 	asset.tmp_x = 0;
 	asset.tmp_y = 0;
@@ -82,7 +85,8 @@ int				main(void)
 			break ;
 		if (create_heat_map(&asset) == 1)
 			break ;
-		asset = init_heat_map(asset);
+		if (asset.end != 1)
+			asset = init_heat_map(asset);
 		asset = find_place(asset, 0, 0);
 		asset = ft_print_res(asset);
 		asset = free_all(asset);

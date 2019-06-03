@@ -43,6 +43,7 @@ typedef struct	s_asset
 	char	**line;
 	char	**piece;
 	int		*coord;
+	int		end;
 }				t_asset;
 
 void		free_all(t_asset *asset);

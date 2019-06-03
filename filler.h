@@ -38,6 +38,7 @@ typedef struct	s_asset
 	char	**piece;
 	int		c1;
 	int		c2;
+	int		end;
 }				t_asset;
 
 void			ft_inttabdel(int ***tab);

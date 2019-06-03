@@ -106,6 +106,12 @@ t_asset			new_place(t_asset asset, int y, int x)
 		k = check(asset, y, x, 0);
 		if (!asset.piece[k] && check2(asset, y, x, 0) <= 1)
 		{
+			if (asset.end == 1)
+			{
+				asset.tmp_x = x;
+				asset.tmp_y = y;
+				asset.end = 2;
+			}
 			asset = count_score(asset, y, x);
 			if ((asset.score == 0 && asset.tmp_score == 0)
 					|| asset.score < asset.tmp_score

@@ -15,8 +15,7 @@
 static char	**test_line(char **tab)
 {
 	if (ft_strcmp(tab[0], "$$$") != 0 || ft_strcmp(tab[1], "exec") != 0
-		|| ft_strcmp(tab[3], ":") != 0
-		|| ft_strcmp(tab[4], "[players/plaurent.filler]") != 0)
+		|| ft_strcmp(tab[3], ":") != 0)
 		tab = NULL;
 	return (tab);
 }

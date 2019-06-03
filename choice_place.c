@@ -12,13 +12,12 @@
 
 #include "filler.h"
 
-static t_asset	count_score(t_asset asset, int y, int x)
+static t_asset	count_score(t_asset asset, int y, int x, int i)
 {
-	int		i;
 	int		j;
 
-	i = 0;
 	j = 0;
+	asset.score = 0;
 	while (asset.piece[i] && asset.piece[i][j] != '\0')
 	{
 		if (y >= asset.y_max)
@@ -107,8 +106,13 @@ t_asset			choice_place(t_asset asset, int y, int x)
 		k = check_placing(asset, y, x, 0);
 		if (!asset.piece[k] && check_nb_wildcards(asset, y, x, 0) <= 1)
 		{
-			asset.score = 0;
-			asset = count_score(asset, y, x);
+			if (asset.end == 1 && asset.tmp_x >= 0 && asset.tmp_y >= 0)
+			{
+				asset.tmp_x = x;
+				asset.tmp_y = y;
+				asset.end = 2;
+			}
+			asset = count_score(asset, y, x, 0);
 			if ((asset.score == 0 && asset.tmp_score == 0)
 					|| asset.score < asset.tmp_score
 					|| asset.tmp_score == 0)

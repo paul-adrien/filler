@@ -64,6 +64,8 @@ static t_asset	check_place(t_asset asset, int i, int j)
 
 t_asset			find_place(t_asset asset, int i, int j)
 {
+	if (asset.end == 2)
+		return (asset);
 	if (asset.map[i] && asset.map[i][j] != asset.player)
 	{
 		if (asset.map[i][j] == '.' || asset.map[i][j] == asset.adv

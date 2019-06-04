@@ -33,10 +33,7 @@ int		map_info(t_asset *asset)
 	if (asset->y_max <= 0 || asset->x_max <= 0)
 		return (1);
 	if (get_next_line(0, &asset->line, 0) != 1)
-	{
-		free(asset->map);
 		return (1);
-	}
 	ft_strdel(&asset->line);
 	return (0);
 }
@@ -45,15 +42,13 @@ int		get_map(t_asset *asset)
 {
 	int		i;
 	char	*line;
-	int		res;
 
 	i = 0;
-	res = 0;
 	if (!(asset->map = (char **)malloc(sizeof(char *) * (asset->y_max + 1))))
 		return (1);
 	while (i <= asset->y_max - 1)
 	{
-		if ((res = get_next_line(0, &line, 0)) != 1)
+		if ((get_next_line(0, &line, 0)) != 1)
 		{
 			while (i > 0 && asset->map[i])
 				free(asset->map[--i]);

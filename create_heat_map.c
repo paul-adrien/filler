@@ -16,19 +16,19 @@ static t_asset	test(t_asset a, int y, int x)
 {
 	if (x + 1 < a.x_max && a.map[y][x + 1] == a.adv)
 		a.heat_map[y][x] = 1;
-	if (x - 1 > 0 && a.map[y][x - 1] == a.adv)
+	else if (x - 1 > 0 && a.map[y][x - 1] == a.adv)
 		a.heat_map[y][x] = 1;
-	if (y + 1 < a.y_max && a.map[y + 1][x] == a.adv)
+	else if (y + 1 < a.y_max && a.map[y + 1][x] == a.adv)
 		a.heat_map[y][x] = 1;
-	if (y - 1 > 0 && a.map[y - 1][x] == a.adv)
+	else if (y - 1 > 0 && a.map[y - 1][x] == a.adv)
 		a.heat_map[y][x] = 1;
-	if (x + 1 < a.x_max && y + 1 < a.y_max && a.map[y + 1][x + 1] == a.adv)
+	else if (x + 1 < a.x_max && y + 1 < a.y_max && a.map[y + 1][x + 1] == a.adv)
 		a.heat_map[y][x] = 1;
-	if (x + 1 < a.x_max && y - 1 > 0 && a.map[y - 1][x + 1] == a.adv)
+	else if (x + 1 < a.x_max && y - 1 > 0 && a.map[y - 1][x + 1] == a.adv)
 		a.heat_map[y][x] = 1;
-	if (x - 1 > 0 && y - 1 > 0 && a.map[y - 1][x - 1] == a.adv)
+	else if (x - 1 > 0 && y - 1 > 0 && a.map[y - 1][x - 1] == a.adv)
 		a.heat_map[y][x] = 1;
-	if (x - 1 > 0 && y + 1 < a.y_max && a.map[y + 1][x - 1] == a.adv)
+	else if (x - 1 > 0 && y + 1 < a.y_max && a.map[y + 1][x - 1] == a.adv)
 		a.heat_map[y][x] = 1;
 	return (a);
 }
@@ -37,33 +37,33 @@ static t_asset	test2(t_asset a, int y, int x, int i)
 {
 	if (x + 1 < a.x_max && a.heat_map[y][x + 1] == i)
 		a.heat_map[y][x] = i + 1;
-	if (x - 1 > 0 && a.heat_map[y][x - 1] == i)
+	else if (x - 1 > 0 && a.heat_map[y][x - 1] == i)
 		a.heat_map[y][x] = i + 1;
-	if (y + 1 < a.y_max && a.heat_map[y + 1][x] == i)
+	else if (y + 1 < a.y_max && a.heat_map[y + 1][x] == i)
 		a.heat_map[y][x] = i + 1;
-	if (y - 1 > 0 && a.heat_map[y - 1][x] == i)
+	else if (y - 1 > 0 && a.heat_map[y - 1][x] == i)
 		a.heat_map[y][x] = i + 1;
-	if (x + 1 < a.x_max && y + 1 < a.y_max && a.heat_map[y + 1][x + 1] == i)
+	else if (x + 1 < a.x_max && y + 1 < a.y_max && a.heat_map[y + 1][x + 1] == i)
 		a.heat_map[y][x] = i + 1;
-	if (x + 1 < a.x_max && y - 1 > 0 && a.heat_map[y - 1][x + 1] == i)
+	else if (x + 1 < a.x_max && y - 1 > 0 && a.heat_map[y - 1][x + 1] == i)
 		a.heat_map[y][x] = i + 1;
-	if (x - 1 > 0 && y - 1 > 0 && a.heat_map[y - 1][x - 1] == i)
+	else if (x - 1 > 0 && y - 1 > 0 && a.heat_map[y - 1][x - 1] == i)
 		a.heat_map[y][x] = i + 1;
-	if (x - 1 > 0 && y + 1 < a.y_max && a.heat_map[y + 1][x - 1] == i)
+	else if (x - 1 > 0 && y + 1 < a.y_max && a.heat_map[y + 1][x - 1] == i)
 		a.heat_map[y][x] = i + 1;
 	return (a);
 }
 
-static t_asset	fill_heat_map(t_asset asset)
+static t_asset	fill_heat_map(t_asset asset, int x, int y)
 {
-	int		x;
-	int		y;
 	int		i;
+	int		n;
 
-	x = 0;
-	y = 0;
+	n = 1;
 	i = 1;
-	while (i < (asset.x_max * asset.y_max))
+	if ((asset.x_max * asset.y_max) > 900)
+		n = 2;
+	while (i < ((asset.x_max * asset.y_max) / 2))
 	{
 		while (y < asset.y_max)
 		{
@@ -108,7 +108,7 @@ t_asset			init_heat_map(t_asset asset)
 		x = 0;
 		y++;
 	}
-	asset = fill_heat_map(asset);
+	asset = fill_heat_map(asset, 0, 0);
 	return (asset);
 }
 

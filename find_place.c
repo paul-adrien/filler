@@ -48,6 +48,8 @@ static t_asset	check_place(t_asset asset, int i, int j)
 		asset.y = i - asset.c1;
 		asset.x = j - asset.c2;
 		asset = choice_place(asset, asset.y, asset.x);
+		if (asset.end >= 4 && asset.tmp_x > 0 && asset.tmp_y > 0)
+			return (asset);
 		if (asset.piece[asset.c1][asset.c2]
 			&& asset.piece[asset.c1][asset.c2 + 1])
 			asset.c2 = asset.c2 + 1;
@@ -64,8 +66,8 @@ static t_asset	check_place(t_asset asset, int i, int j)
 
 t_asset			find_place(t_asset asset, int i, int j)
 {
-	if (asset.end == 2)
-		return (asset);
+	if (asset.end >= 4 && asset.tmp_x > 0 && asset.tmp_y > 0)
+			return (asset);	
 	if (asset.map[i] && asset.map[i][j] != asset.player)
 	{
 		if (asset.map[i][j] == '.' || asset.map[i][j] == asset.adv

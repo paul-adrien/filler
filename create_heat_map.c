@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 12:28:38 by plaurent          #+#    #+#             */
-/*   Updated: 2019/05/29 17:59:04 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/06/04 10:58:11 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ static t_asset	test2(t_asset a, int y, int x, int i)
 		a.heat_map[y][x] = i + 1;
 	else if (y - 1 > 0 && a.heat_map[y - 1][x] == i)
 		a.heat_map[y][x] = i + 1;
-	else if (x + 1 < a.x_max && y + 1 < a.y_max && a.heat_map[y + 1][x + 1] == i)
+	else if (x + 1 < a.x_max
+			&& y + 1 < a.y_max && a.heat_map[y + 1][x + 1] == i)
 		a.heat_map[y][x] = i + 1;
 	else if (x + 1 < a.x_max && y - 1 > 0 && a.heat_map[y - 1][x + 1] == i)
 		a.heat_map[y][x] = i + 1;

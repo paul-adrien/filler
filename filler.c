@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 12:27:44 by plaurent          #+#    #+#             */
-/*   Updated: 2019/05/29 18:22:29 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/06/04 10:56:16 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,17 @@ static void		asset_init(t_asset *asset)
 	asset->y_max = 0;
 	asset->score = 0;
 	asset->tmp_score = 0;
+	asset->tmp_x = 0;
+	asset->tmp_y = 0;
 	asset->end = 0;
 }
 
 static t_asset	ft_print_res(t_asset asset)
 {
+	if (asset.tmp_x < 0)
+		asset.tmp_x = asset.x_max - asset.tmp_x;
+	if (asset.tmp_y < 0)
+		asset.tmp_y = asset.y_max - asset.tmp_y;
 	ft_putnbr(asset.tmp_y);
 	write(1, " ", 1);
 	ft_putnbr(asset.tmp_x);
@@ -75,18 +81,14 @@ int				main(void)
 		return (1);
 	while (1)
 	{
-		if (map_info(&asset) == 1)
+		if (map_info(&asset) == 1 || get_map(&asset) == 1)
 			break ;
-		if (get_map(&asset) == 1)
+		if (piece_info(&asset) == 1 || get_piece(&asset) == 1)
 			break ;
-		if (piece_info(&asset) == 1)
-			break ;
-		if (get_piece(&asset) == 1)
-				break ;
-		if (asset.score >= 0)
+		if (asset.score >= 0 && asset.end < 4)
 			if (create_heat_map(&asset) == 1)
 				break ;
-		if (asset.score >= 0)
+		if (asset.score >= 0 && asset.end < 4)
 			asset = init_heat_map(asset);
 		asset = find_place(asset, 0, 0);
 		asset = ft_print_res(asset);

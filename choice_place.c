@@ -106,13 +106,8 @@ t_asset			choice_place(t_asset asset, int y, int x)
 		k = check_placing(asset, y, x, 0);
 		if (!asset.piece[k] && check_nb_wildcards(asset, y, x, 0) <= 1)
 		{
-			if (asset.end >= 4 && x > 0 && y > 0)
-			{
-				asset.tmp_x = x;
-				asset.tmp_y = y;
-				return (asset);
-			}
-			asset = count_score(asset, y, x, 0);
+			if (asset.end < 4)
+				asset = count_score(asset, y, x, 0);
 			if ((asset.score == 0 && asset.tmp_score == 0)
 					|| asset.score < asset.tmp_score
 					|| asset.tmp_score == 0)

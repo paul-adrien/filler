@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 16:07:29 by plaurent          #+#    #+#             */
-/*   Updated: 2019/05/29 18:40:42 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/06/04 10:57:37 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static t_asset	check_place(t_asset asset, int i, int j)
 		asset.x = j - asset.c2;
 		asset = choice_place(asset, asset.y, asset.x);
 		if (asset.end >= 4 && asset.tmp_x > 0 && asset.tmp_y > 0)
-			return (asset);
+			break ;
 		if (asset.piece[asset.c1][asset.c2]
 			&& asset.piece[asset.c1][asset.c2 + 1])
 			asset.c2 = asset.c2 + 1;
@@ -67,7 +67,7 @@ static t_asset	check_place(t_asset asset, int i, int j)
 t_asset			find_place(t_asset asset, int i, int j)
 {
 	if (asset.end >= 4 && asset.tmp_x > 0 && asset.tmp_y > 0)
-			return (asset);	
+		return (asset);
 	if (asset.map[i] && asset.map[i][j] != asset.player)
 	{
 		if (asset.map[i][j] == '.' || asset.map[i][j] == asset.adv

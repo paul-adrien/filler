@@ -12,12 +12,20 @@
 
 #include "filler.h"
 
-static char	**test_line(char **tab)
+static int	test_line(char **tab)
 {
+	int		i;
+
+	i = 0;
+
+	while (tab[i])
+		i++;
+	if (i != 5)
+		return (0);
 	if (ft_strcmp(tab[0], "$$$") != 0 || ft_strcmp(tab[1], "exec") != 0
-		|| ft_strcmp(tab[3], ":") != 0)
-		tab = NULL;
-	return (tab);
+		|| ft_strcmp(tab[3], ":") != 0 || ft_strstr(tab[4], "plaurent.filler]") == 0)
+		return (0);
+	return (1);
 }
 
 int			get_player(t_asset *asset)
@@ -30,7 +38,7 @@ int			get_player(t_asset *asset)
 		return (1);
 	}
 	ft_strdel(&asset->line);
-	if ((asset->tab = test_line(asset->tab)) == NULL)
+	if (test_line(asset->tab) == 0)
 	{
 		free_tab(&asset->tab);
 		return (1);

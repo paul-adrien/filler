@@ -37,9 +37,9 @@ static void		asset_init(t_asset *asset)
 static t_asset	ft_print_res(t_asset asset)
 {
 	if (asset.tmp_x < 0)
-		asset.tmp_x = asset.x_max - asset.tmp_x;
+		asset.tmp_x = asset.x_max + asset.tmp_x - 1;
 	if (asset.tmp_y < 0)
-		asset.tmp_y = asset.y_max - asset.tmp_y;
+		asset.tmp_y = asset.y_max + asset.tmp_y - 1;
 	ft_putnbr(asset.tmp_y);
 	write(1, " ", 1);
 	ft_putnbr(asset.tmp_x);
@@ -51,18 +51,19 @@ static t_asset	free_all(t_asset asset)
 {
 	if (asset.map)
 	{
-		free(asset.map);
+		free_tab(&asset.map);
 		asset.map = NULL;
 	}
 	if (asset.heat_map)
 	{
-		free(asset.heat_map);
-		asset.heat_map = NULL;
+		//free(asset.heat_map);
+		ft_inttabdel(&asset.heat_map);
+		//asset.heat_map = NULL;
 	}
 	if (asset.piece)
 	{
-		free(asset.piece);
-		asset.piece = NULL;
+		free_tab(&asset.piece);
+		//asset.piece = NULL;
 	}
 	if (asset.tmp_score <= 0)
 		asset.end = asset.end + 1;
@@ -78,7 +79,7 @@ int				main(void)
 
 	asset_init(&asset);
 	if (get_player(&asset) == 1)
-		return (1);
+		return (-1 * get_next_line(0, NULL, 1));
 	while (1)
 	{
 		if (map_info(&asset) == 1 || get_map(&asset) == 1)

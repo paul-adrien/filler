@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/15 11:16:28 by plaurent          #+#    #+#             */
-/*   Updated: 2019/05/29 18:37:56 by plaurent         ###   ########.fr       */
+/*   Created: 2019/06/13 15:04:20 by plaurent          #+#    #+#             */
+/*   Updated: 2019/06/13 15:04:58 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int					get_next_line(int const fd, char **line, int error)
 	while (!(ft_strchr(str[fd], '\n')) && (s = read(fd, buff, BUFF_SIZE)) > 0)
 	{
 		buff[s] = '\0';
-		if (!(str[fd] = st_strjoin(str[fd], buff)))
+		if (buff[0] == '\0' || !(str[fd] = st_strjoin(str[fd], buff)))
 			return (-1);
 	}
 	*line = ft_strsub(str[fd], 0, st_length_line(str[fd]));

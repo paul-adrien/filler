@@ -12,7 +12,21 @@
 
 #include "filler.h"
 
-int		piece_info(t_asset *asset)
+static int	test_line(char **tab)
+{
+	int		i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	if (i != 3)
+		return (0);
+	if (ft_strcmp(tab[0], "Piece") != 0)
+		return (0);
+	return (1);
+}
+
+int			piece_info(t_asset *asset)
 {
 	char	**tab;
 	char	*line;
@@ -26,6 +40,11 @@ int		piece_info(t_asset *asset)
 		return (1);
 	}
 	ft_strdel(&line);
+	if (test_line(tab) != 1)
+	{
+		free_tab(&tab);
+		return (1);
+	}
 	asset->y_pmax = ft_atoi(tab[1]);
 	asset->x_pmax = ft_atoi(tab[2]);
 	free_tab(&tab);
@@ -34,7 +53,20 @@ int		piece_info(t_asset *asset)
 	return (0);
 }
 
-int		get_piece(t_asset *asset)
+static int	test_line2(char *line, int x_pmax)
+{
+	int		i;
+
+	i = -1;
+	while (line[++i])
+		if ((line[i] != '.' && line[i] != '*') || i > x_pmax)
+			return (0);
+	if ( i != x_pmax)
+		return (0);
+	return (1);
+}
+
+int			get_piece(t_asset *asset)
 {
 	char	*line;
 	int		i;
@@ -45,11 +77,10 @@ int		get_piece(t_asset *asset)
 	while (i <= asset->y_pmax - 1)
 	{
 		if ((get_next_line(0, &line, 0)) != 1)
+			return (1);
+		if (test_line2(line, asset->x_pmax) != 1)
 		{
-			while (i > 0)
-				free(asset->piece[i--]);
-			free(asset->piece);
-			asset->piece = NULL;
+			ft_strdel(&line);
 			return (1);
 		}
 		if (!(asset->piece[i++] = ft_strsub(line, 0, asset->x_pmax)))

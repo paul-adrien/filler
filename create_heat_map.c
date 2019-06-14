@@ -100,9 +100,9 @@ t_asset			init_heat_map(t_asset asset)
 				asset.heat_map[y][x] = 0;
 				asset = test(asset, y, x);
 			}
-			if (asset.map[y][x] == asset.player && asset.heat_map[y][x])
+			else if (asset.map[y][x] == asset.player && asset.heat_map[y][x])
 				asset.heat_map[y][x] = -1;
-			if (asset.map[y][x] == asset.adv && asset.heat_map[y][x])
+			else if (asset.map[y][x] == asset.adv && asset.heat_map[y][x])
 				asset.heat_map[y][x] = -2;
 			x++;
 		}
@@ -116,6 +116,8 @@ t_asset			init_heat_map(t_asset asset)
 int				create_heat_map(t_asset *a)
 {
 	int		i;
+	int		x = 0;
+	int		y = 0;
 
 	i = 0;
 	if (!(a->heat_map = (int **)malloc(sizeof(int *) * (a->y_max + 1))))
@@ -124,13 +126,23 @@ int				create_heat_map(t_asset *a)
 	{
 		if (!(a->heat_map[i++] = (int *)malloc(sizeof(int) * (a->x_max + 1))))
 		{
-			i--;
-			while (i > 0 && a->heat_map[i])
-				free(a->heat_map[--i]);
-			free(a->heat_map);
-			a->heat_map = NULL;
+			//i--;
+			//while (i > 0 && a->heat_map[i])
+			//	free(a->heat_map[--i]);
+			//free(a->heat_map);
+			//a->heat_map = NULL;
 			return (1);
 		}
+	}
+	while (y < a->y_max)
+	{
+		while (x < a->x_max)
+		{
+			a->heat_map[y][x] = 0;
+			x++;
+		}
+		x = 0;
+		y++;
 	}
 	a->heat_map[i] = NULL;
 	return (0);

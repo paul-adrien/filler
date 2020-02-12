@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 12:28:38 by plaurent          #+#    #+#             */
-/*   Updated: 2019/06/04 10:58:11 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/06/24 15:17:13 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ static t_asset	fill_heat_map(t_asset asset, int x, int y)
 	int		i;
 	int		n;
 
-	n = 1;
 	i = 1;
-	if ((asset.x_max * asset.y_max) > 900)
+	n = 1;
+	if (asset.x_max * asset.y_max > 900)
 		n = 2;
-	while (i < ((asset.x_max * asset.y_max) / 2))
+	while (i < ((asset.x_max * asset.y_max) / n))
 	{
 		while (y < asset.y_max)
 		{
@@ -116,32 +116,24 @@ t_asset			init_heat_map(t_asset asset)
 int				create_heat_map(t_asset *a)
 {
 	int		i;
-	int		x = 0;
-	int		y = 0;
+	int		x;
+	int		y;
 
 	i = 0;
 	if (!(a->heat_map = (int **)malloc(sizeof(int *) * (a->y_max + 1))))
 		return (1);
 	while (i <= a->y_max - 1)
-	{
 		if (!(a->heat_map[i++] = (int *)malloc(sizeof(int) * (a->x_max + 1))))
-		{
-			//i--;
-			//while (i > 0 && a->heat_map[i])
-			//	free(a->heat_map[--i]);
-			//free(a->heat_map);
-			//a->heat_map = NULL;
 			return (1);
-		}
-	}
+	y = 0;
 	while (y < a->y_max)
 	{
-		while (x < a->x_max)
+		x = 0;
+		while (x < a->x_max + 1)
 		{
 			a->heat_map[y][x] = 0;
 			x++;
 		}
-		x = 0;
 		y++;
 	}
 	a->heat_map[i] = NULL;

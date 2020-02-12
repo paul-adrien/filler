@@ -17,22 +17,21 @@ static int	test_line(char **tab)
 	int		i;
 
 	i = 0;
-
 	while (tab[i])
 		i++;
 	if (i != 5)
 		return (0);
 	if (ft_strcmp(tab[0], "$$$") != 0 || ft_strcmp(tab[1], "exec") != 0
-		|| ft_strcmp(tab[3], ":") != 0 || ft_strstr(tab[4], "plaurent.filler]") == 0)
+		|| ft_strcmp(tab[3], ":") != 0
+		|| ft_strstr(tab[4], "plaurent.filler]") == 0)
 		return (0);
 	return (1);
 }
 
 int			get_player(t_asset *asset)
 {
-	if (get_next_line(0, &asset->line, 0) != 1)
-		return (1);
-	if (!(asset->tab = ft_strsplit(asset->line, ' ')))
+	if (get_next_line(0, &asset->line, 0) != 1
+		|| !(asset->tab = ft_strsplit(asset->line, ' ')))
 	{
 		ft_strdel(&asset->line);
 		return (1);

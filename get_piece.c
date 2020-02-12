@@ -61,7 +61,7 @@ static int	test_line2(char *line, int x_pmax)
 	while (line[++i])
 		if ((line[i] != '.' && line[i] != '*') || i > x_pmax)
 			return (0);
-	if ( i != x_pmax)
+	if (i != x_pmax)
 		return (0);
 	return (1);
 }
@@ -80,6 +80,7 @@ int			get_piece(t_asset *asset)
 			return (1);
 		if (test_line2(line, asset->x_pmax) != 1)
 		{
+			asset->piece[i] = NULL;
 			ft_strdel(&line);
 			return (1);
 		}

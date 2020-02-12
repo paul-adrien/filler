@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   filler.c                                           :+:      :+:    :+:   */
+/*   get_map.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/19 12:27:44 by plaurent          #+#    #+#             */
-/*   Updated: 2019/05/29 18:21:15 by plaurent         ###   ########.fr       */
+/*   Created: 2019/06/24 16:27:49 by plaurent          #+#    #+#             */
+/*   Updated: 2019/06/24 16:41:46 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,15 @@ static int	test_line2(char *line, int x_max)
 	i = -1;
 	while (line[++i])
 		if ((i < 3 && line[i] < 0 && line[i] > 9)
-			|| (i == 3 && line[i] != ' ') || (i > 3
-			&& line[i] != '.' && line[i] != 'X' && line[i] != 'O') || i > x_max + 4)
+				|| (i == 3 && line[i] != ' ') || (i > 3 && line[i] != '.'
+					&& line[i] != 'X' && line[i] != 'O') || i > x_max + 4)
 			return (0);
 	if (i != x_max + 4)
 		return (0);
 	return (1);
 }
 
-int		get_map(t_asset *asset)
+int			get_map(t_asset *asset)
 {
 	int		i;
 	char	*line;

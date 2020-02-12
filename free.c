@@ -18,7 +18,7 @@ void	free_tab(char ***tab)
 
 	i = 0;
 	while ((*tab)[i] != NULL)
-		free((*tab)[i++]);
+		ft_strdel(&(*tab)[i++]);
 	free(*tab);
 	*tab = NULL;
 }
@@ -40,9 +40,8 @@ void	ft_inttabdel(int ***tab)
 void	last_free(char **map, char **piece, char *line, int **heat_map)
 {
 	get_next_line(0, NULL, 1);
-	printf("%p / %p\n", map, piece);
-	//if (map != NULL)
-		//free_tab(&map);
+	if (map != NULL)
+		free_tab(&map);
 	if (piece != NULL)
 		free_tab(&piece);
 	if (line != NULL)

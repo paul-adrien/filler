@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 17:54:16 by plaurent          #+#    #+#             */
-/*   Updated: 2019/05/29 17:57:23 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/06/24 16:22:13 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@ static t_asset	count_score(t_asset asset, int y, int x, int i)
 
 	j = 0;
 	asset.score = 0;
-	while (asset.piece[i] && asset.piece[i][j] != '\0')
+	while (i < asset.y_pmax && j < asset.x_pmax && asset.piece[i]
+			&& asset.piece[i][j] != '\0')
 	{
-		if (y >= asset.y_max)
+		if (y >= asset.y_max - 1)
 			return (asset);
-		if (asset.piece[i][j] == '*' && asset.heat_map[y][x])
+		if (asset.piece[i][j] == '*' && asset.heat_map[y][x] > 0)
 			asset.score = asset.score + asset.heat_map[y][x];
-		if (asset.piece[i] && asset.piece[i][j + 1] && x + 1 < asset.x_max)
+		if (asset.piece[i] && asset.piece[i][j + 1] && x + 1 < asset.x_max - 1)
 		{
 			j++;
 			x++;
@@ -74,7 +75,8 @@ static int		check_placing(t_asset asset, int y, int x, int k)
 	int		l;
 
 	l = 0;
-	while (asset.piece[k] && asset.piece[k][l] != '\0')
+	while (x + 1 < asset.x_max && l < asset.x_pmax && y < asset.y_max
+			&& k < asset.y_pmax && asset.piece[k] && asset.piece[k][l] != '\0')
 	{
 		if ((asset.piece[k][l] == '.') || ((asset.piece[k][l] == '*')
 				&& (asset.map[y] && asset.map[y][x] != '\0'
